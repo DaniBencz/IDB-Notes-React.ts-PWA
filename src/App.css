@@ -7,6 +7,13 @@
   color: white;
 }
 
+#display{
+  width: 90%;
+  padding: 10px;
+  background: whitesmoke;
+  color: black;
+}
+
 ul{
   list-style: none;
   padding: 0;

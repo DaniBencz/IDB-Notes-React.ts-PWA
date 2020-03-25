@@ -1,11 +1,17 @@
 import React from 'react';
 import './App.css';
 
-// start interact with IDB
-let dbs;
 if ("indexedDB" in window && window.indexedDB !== undefined) {
-  dbs = window.indexedDB
-  console.log('starting')
+  let dbs: IDBFactory = window.indexedDB
+  let dbName: string = 'pwa_notes_db'
+  let request: IDBOpenDBRequest
+  request = dbs.open(dbName, 1)
+
+  request.onupgradeneeded = (e: any) => {
+    let database: IDBDatabase
+    database = e.target.result
+    console.log('upgrade needed')
+  }
 }
 else {
   alert("No support for indexedDB")
