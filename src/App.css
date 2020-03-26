@@ -13,6 +13,7 @@
 }
 
 #display{
+  margin: 2px;
   width: 90%;
   padding: 10px;
   background: whitesmoke;
@@ -32,4 +33,6 @@ button{
 
 input{
   margin: 2px;
+  width: 90%;
+  padding: 10px;
 }
