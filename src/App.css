@@ -7,6 +7,11 @@
   color: white;
 }
 
+#display h2{
+  margin: auto;
+  text-align: center;
+}
+
 #display{
   width: 90%;
   padding: 10px;
