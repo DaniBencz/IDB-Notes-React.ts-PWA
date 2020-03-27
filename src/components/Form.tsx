@@ -1,6 +1,8 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
+
 
 const Form = () => {
+  const [title, setTitle] = useState('')
 
   useEffect(() => { // componentDidMount
     if ("indexedDB" in window && window.indexedDB !== undefined) {
@@ -11,11 +13,9 @@ const Form = () => {
 
       request.onupgradeneeded = (e: any) => {
         const db = e.target.result
-
         const objectStore: IDBObjectStore = db.createObjectStore(
           'notes_os', { keyPath: 'id', autoIncrement: true }
         );
-
         objectStore.createIndex('title', 'title', { unique: false })
         objectStore.createIndex('description', 'description', { unique: false })
       }
@@ -35,9 +35,8 @@ const Form = () => {
     request.onsuccess = (e: any) => {
       const db = e.target.result
       const transaction = db.transaction('notes_os', 'readwrite')
-
       const objectStore = transaction.objectStore('notes_os')
-      const add = objectStore.add({ title: 'title1', description: 'descr1' });
+      const add = objectStore.add({ title: { title }, description: 'descr1' })
 
       add.onsuccess = () => {
         console.log('success')
@@ -52,7 +51,7 @@ const Form = () => {
   return (
     <>
       <h2>New Note</h2>
-      <input id="title" type="text" placeholder="Note Title"></input>
+      <input id="title" type="text" placeholder="Note Title" value={title} onInput={(e: any) => setTitle(e.target.value)}></input>
       <input id="description" type="text" placeholder="Description"></input>
       <button onClick={addNewNote}>Create New Note</button>
     </>
