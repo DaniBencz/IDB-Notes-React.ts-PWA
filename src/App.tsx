@@ -17,7 +17,7 @@ const Note = (props: any) => {
         <li>
           <h3>{props.title}</h3>
           <p>{props.description}</p>
-          <button onClick={deleteNote}>Delete note</button>
+          <button onClick={deleteNote}>Delete Note</button>
         </li>
       </ul>
     </div>

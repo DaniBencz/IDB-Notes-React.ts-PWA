@@ -5,18 +5,14 @@ const Form = () => {
   useEffect(() => { // componentDidMount
     if ("indexedDB" in window && window.indexedDB !== undefined) {
 
-      let idbf: IDBFactory = window.indexedDB
-      let dbName: string = 'pwa_notes_db'
-      let request: IDBOpenDBRequest
-      request = idbf.open(dbName, 3)
+      const idbf: IDBFactory = window.indexedDB
+      const dbName: string = 'pwa_notes_db'
+      const request: IDBOpenDBRequest = idbf.open(dbName, 1)
 
       request.onupgradeneeded = (e: any) => {
-        console.log('upgrade needed')
+        const db = e.target.result
 
-        let database: IDBDatabase
-        database = e.target.result
-
-        let objectStore: IDBObjectStore = database.createObjectStore(
+        const objectStore: IDBObjectStore = db.createObjectStore(
           'notes_os', { keyPath: 'id', autoIncrement: true }
         );
 
@@ -24,7 +20,7 @@ const Form = () => {
         objectStore.createIndex('description', 'description', { unique: false })
       }
 
-      request.onerror = function (e: any) {
+      request.onerror = (e: any) => {
         console.log('error: ', request.error)
       }
     }
@@ -34,7 +30,23 @@ const Form = () => {
   }, [])
 
   const addNewNote = () => {
-    console.log('new note')
+    const request = window.indexedDB.open('pwa_notes_db')
+
+    request.onsuccess = (e: any) => {
+      const db = e.target.result
+      const transaction = db.transaction('notes_os', 'readwrite')
+
+      const objectStore = transaction.objectStore('notes_os')
+      const add = objectStore.add({ title: 'title1', description: 'descr1' });
+
+      add.onsuccess = () => {
+        console.log('success')
+      }
+    }
+
+    request.onerror = (e: any) => {
+      console.log('error: ', request.error)
+    }
   }
 
   return (
@@ -42,7 +54,7 @@ const Form = () => {
       <h2>New Note</h2>
       <input id="title" type="text" placeholder="Note Title"></input>
       <input id="description" type="text" placeholder="Description"></input>
-      <button onClick={addNewNote}>Create new note</button>
+      <button onClick={addNewNote}>Create New Note</button>
     </>
   )
 }
