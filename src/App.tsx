@@ -29,6 +29,7 @@ const Display = () => {
     <div id="display">
       <h2>Notes</h2>
       <Note title="my title" description="description"></Note>
+      <Note title="foo" description="bar"></Note>
     </div >
   )
 }

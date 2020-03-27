@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 
-
 const Form = () => {
   const [title, setTitle] = useState('')
+  const [descript, setDescript] = useState('')
 
   useEffect(() => { // componentDidMount
     if ("indexedDB" in window && window.indexedDB !== undefined) {
@@ -36,7 +36,7 @@ const Form = () => {
       const db = e.target.result
       const transaction = db.transaction('notes_os', 'readwrite')
       const objectStore = transaction.objectStore('notes_os')
-      const add = objectStore.add({ title: { title }, description: 'descr1' })
+      const add = objectStore.add({ title: title, description: descript })
 
       add.onsuccess = () => {
         console.log('success')
@@ -52,7 +52,7 @@ const Form = () => {
     <>
       <h2>New Note</h2>
       <input id="title" type="text" placeholder="Note Title" value={title} onInput={(e: any) => setTitle(e.target.value)}></input>
-      <input id="description" type="text" placeholder="Description"></input>
+      <input id="description" type="text" placeholder="Description" value={descript} onInput={(e: any) => setDescript(e.target.value)}></input>
       <button onClick={addNewNote}>Create New Note</button>
     </>
   )
