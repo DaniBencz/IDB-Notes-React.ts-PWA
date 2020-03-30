@@ -1,58 +1,28 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 
-const Form = () => {
+const Form = (props: any) => {
   const [title, setTitle] = useState('')
   const [descript, setDescript] = useState('')
-
-  useEffect(() => { // componentDidMount
-    if ("indexedDB" in window && window.indexedDB !== undefined) {
-
-      const idbf: IDBFactory = window.indexedDB
-      const dbName: string = 'pwa_notes_db'
-      const request: IDBOpenDBRequest = idbf.open(dbName, 1)
-
-      request.onupgradeneeded = (e: any) => {
-        const db = e.target.result
-        const objectStore: IDBObjectStore = db.createObjectStore(
-          'notes_os', { keyPath: 'id', autoIncrement: true }
-        );
-        objectStore.createIndex('title', 'title', { unique: false })
-        objectStore.createIndex('description', 'description', { unique: false })
-      }
-
-      request.onerror = (e: any) => {
-        console.log('error: ', request.error)
-      }
-    }
-    else {
-      alert("No support for indexedDB")
-    }
-  }, [])
+  const { db } = props
+  console.log('db: ', db)
 
   const addNewNote = () => {
-    const request = window.indexedDB.open('pwa_notes_db')
+    const transaction = db.transaction('notes_os', 'readwrite')
+    const objectStore = transaction.objectStore('notes_os')
+    const add = objectStore.add({ title: title, description: descript })  // update with state values
 
-    request.onsuccess = (e: any) => {
-      const db = e.target.result
-      const transaction = db.transaction('notes_os', 'readwrite')
-      const objectStore = transaction.objectStore('notes_os')
-      const add = objectStore.add({ title: title, description: descript })
+    add.onsuccess = () => console.log('success adding')
 
-      add.onsuccess = () => {
-        console.log('success')
-      }
-    }
-
-    request.onerror = (e: any) => {
-      console.log('error: ', request.error)
-    }
+    setTitle('')  // empty input fields
+    setDescript('')
   }
 
   return (
     <>
       <h2>New Note</h2>
-      <input id="title" type="text" placeholder="Note Title" value={title} onInput={(e: any) => setTitle(e.target.value)}></input>
-      <input id="description" type="text" placeholder="Description" value={descript} onInput={(e: any) => setDescript(e.target.value)}></input>
+      <input id="title" type="text" placeholder="Note Title" value={title} onChange={(e: any) => setTitle(e.target.value)}></input>
+      {/* works with onInput too, but throws error in console */}
+      <input id="description" type="text" placeholder="Description" value={descript} onChange={(e: any) => setDescript(e.target.value)}></input>
       <button onClick={addNewNote}>Create New Note</button>
     </>
   )
