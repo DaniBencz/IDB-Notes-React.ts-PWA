@@ -3,16 +3,10 @@ import React, { useState } from 'react'
 const Form = (props: any) => {
   const [title, setTitle] = useState('')
   const [descript, setDescript] = useState('')
-  const { db } = props
-  console.log('db: ', db)
+  const { addNewNote } = props
 
-  const addNewNote = () => {
-    const transaction = db.transaction('notes_os', 'readwrite')
-    const objectStore = transaction.objectStore('notes_os')
-    const add = objectStore.add({ title: title, description: descript })  // update with state values
-
-    add.onsuccess = () => console.log('success adding')
-
+  const clearFieldAndSubmit = () => {
+    addNewNote(title, descript)
     setTitle('')  // empty input fields
     setDescript('')
   }
@@ -23,7 +17,7 @@ const Form = (props: any) => {
       <input id="title" type="text" placeholder="Note Title" value={title} onChange={(e: any) => setTitle(e.target.value)}></input>
       {/* works with onInput too, but throws error in console */}
       <input id="description" type="text" placeholder="Description" value={descript} onChange={(e: any) => setDescript(e.target.value)}></input>
-      <button onClick={addNewNote}>Create New Note</button>
+      <button onClick={clearFieldAndSubmit}>Create New Note</button>
     </>
   )
 }

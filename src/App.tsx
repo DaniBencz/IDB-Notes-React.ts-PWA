@@ -3,42 +3,8 @@
 
 import React, { useEffect, useRef } from 'react';
 import Form from './components/Form'
+import Display from './components/Display'
 import './App.css';
-
-const Note = (props: any) => {
-
-  const deleteNote = () => {
-    console.log('delete note')
-  }
-
-  return (
-    <div id="note">
-      <ul>
-        <li>
-          <h3>{props.title}</h3>
-          <p>{props.description}</p>
-          <button onClick={deleteNote}>Delete Note</button>
-        </li>
-      </ul>
-    </div>
-  )
-}
-
-const Display = (props: any) => {
-  const { db } = props
-
-  useEffect(() => {
-    console.log('display ok')
-  }, [db])
-
-  return (
-    <div id="display">
-      <h2>Notes</h2>
-      <Note title="my title" description="description"></Note>
-      <Note title="foo" description="bar"></Note>
-    </div >
-  )
-}
 
 function App() {
   let db: any = useRef()
@@ -51,35 +17,40 @@ function App() {
       const request: IDBOpenDBRequest = idbf.open(dbName, 2)
 
       request.onupgradeneeded = (e: any) => { // runs the very first time, and on version change
-        console.log('upgrade')
         db.current = e.target.result
         const objectStore: IDBObjectStore = db.current.createObjectStore(
           'notes_os', { keyPath: 'id', autoIncrement: true }
         );
         objectStore.createIndex('title', 'title', { unique: false })
         objectStore.createIndex('description', 'description', { unique: false })
+        console.log('upgrade')
       }
 
       request.onsuccess = (e: any) => {
         db.current = e.target.result
-        //console.log('event result:', e.target.result) ok
         console.log('db.current in success', db.current)
       }
-      
-      request.onerror = (e: any) => {
-        console.log('error: ', request.error)
-      }
+
+      request.onerror = (e: any) => console.log('error: ', request.error)
     }
-    else alert("No support for indexedDB")
+    else alert("IndexedDB is not supported")
   }, [])
-  
-  console.log('db.current outside', db.current) // happens too soon
+
+  const addNewNote = (title: string, descript: string) => {
+    console.log('db.current in add new', db.current)
+
+    const transaction = db.current.transaction('notes_os', 'readwrite')
+    const objectStore = transaction.objectStore('notes_os')
+    const add = objectStore.add({ title: title, description: descript })  // update with state values
+
+    add.onsuccess = () => console.log('success adding')
+  }
 
   return (
     <div className="App">
       <h1>IndexedDB with React</h1>
       <Display db={db.current}></Display>
-      <Form db={db.current}></Form>
+      <Form addNewNote={addNewNote} ></Form>
     </div>
   )
 }
