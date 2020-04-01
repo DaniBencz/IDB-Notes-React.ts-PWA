@@ -20,13 +20,13 @@ const Note = (props: any) => {
 }
 
 const Display = (props: any) => {
-  const { db } = props
+  const { notes_os } = props
 
   useEffect(() => {
     // render from db
 
-    console.log('db in display: ', db)
-  }, [db])
+    console.log('notes_os in display: ', notes_os)
+  }, [notes_os])
 
   // adding new entry
 
