@@ -1,14 +1,14 @@
 // https://visualstudiomagazine.com/articles/2016/08/30/storing-data-client-javascript-typescript.aspx
 // https://visualstudiomagazine.com/articles/2016/09/01/working-with-indexeddb.aspx
 
-import React, { useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import Form from './components/Form'
 import Display from './components/Display'
 import useBeforeFirstRender from './beforeRender'
 import './App.css';
 
 function App() {
-  let db: any = useRef()
+  const [db, callDB] = useState<any>()
 
   const setUpDB = () => {
     return new Promise((res, rej) => {
@@ -19,43 +19,37 @@ function App() {
         const request: IDBOpenDBRequest = idbf.open(dbName, 2)
 
         request.onupgradeneeded = (e: any) => { // runs the very first time, and on version change
-          db.current = e.target.result
-          const objectStore: IDBObjectStore = db.current.createObjectStore(
+          callDB(e.target.result)
+          const objectStore: IDBObjectStore = db.createObjectStore(
             'notes_os', { keyPath: 'id', autoIncrement: true }
           );
           objectStore.createIndex('title', 'title', { unique: false })
           objectStore.createIndex('description', 'description', { unique: false })
-          console.log('upgrade')
+          res('upgraded')
         }
 
         request.onsuccess = (e: any) => {
-          db.current = e.target.result
-          console.log('db.current in success', db.current)
+          callDB(e.target.result)
+          res('success')
         }
 
         request.onerror = (e: any) => console.log('error: ', request.error)
       }
       else alert("IndexedDB is not supported")
-      res('ok')
     })
   }
 
-  useBeforeFirstRender(() => {
-    setUpDB().then(ok => {
-      console.log(ok)
-      console.log('db before render: ', db.current)
+  useBeforeFirstRender(() => {  // unlike useEffect, this will run before the first render
+    setUpDB().then(res => {
+      console.log(res)
+      console.log('db before render: ', db)
     })
   })
 
-  /* useEffect(() => { // componentDidMount
-    setUpDB()
-    console.log('db in effect: ', db.current)
-  }, []) */
-
   const addNewNote = (title: string, descript: string) => {
-    console.log('db.current in add new', db.current)
+    console.log('db in add new', db)
 
-    const transaction = db.current.transaction('notes_os', 'readwrite')
+    const transaction = db.transaction('notes_os', 'readwrite')
     const objectStore = transaction.objectStore('notes_os')
     const add = objectStore.add({ title: title, description: descript })  // update with state values
 
@@ -65,7 +59,7 @@ function App() {
   return (
     <div className="App">
       <h1>IndexedDB with React</h1>
-      <Display db={db.current}></Display>
+      <Display db={db}></Display> {/* db initially is undefined, then state gets updated, and passed to Display*/}
       <Form addNewNote={addNewNote} ></Form>
     </div>
   )

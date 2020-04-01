@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 
 const Form = (props: any) => {
+  // useRef instead ?
   const [title, setTitle] = useState('')
   const [descript, setDescript] = useState('')
   const { addNewNote } = props
