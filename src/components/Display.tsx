@@ -23,12 +23,22 @@ const Display = (props: any) => {
   const { db } = props
 
   useEffect(() => {
-    // render from db
 
-    console.log('db in display: ', db)
-  }, [db])
+    if (db) {
+      let objectStore = db.transaction('notes_os').objectStore('notes_os')
+      objectStore.openCursor().onsuccess = (e: any) => {
 
-  // adding new entry
+        let cursor = e.target.result
+        if (cursor) {
+          let title = cursor.value.title
+          let descr = cursor.value.description
+          console.log('title: ', title)
+          console.log('descr: ', descr)
+          cursor.continue()
+        }
+      }
+    }
+  }, [db])  // re-execute if change in db
 
   return (
     <div id="display">

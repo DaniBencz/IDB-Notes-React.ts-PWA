@@ -8,7 +8,7 @@ import useBeforeFirstRender from './beforeRender'
 import './App.css';
 
 function App() {
-  const [db, callDB] = useState<any>()
+  const [dbs, callDB] = useState<any>()
 
   const setUpDB = () => {
     return new Promise((res, rej) => {
@@ -20,6 +20,7 @@ function App() {
 
         request.onupgradeneeded = (e: any) => { // runs the very first time, and on version change
           callDB(e.target.result)
+          const db = e.target.result
           const objectStore: IDBObjectStore = db.createObjectStore(
             'notes_os', { keyPath: 'id', autoIncrement: true }
           );
@@ -30,7 +31,7 @@ function App() {
 
         request.onsuccess = (e: any) => {
           callDB(e.target.result)
-          res('success')
+          res('db request success')
         }
 
         request.onerror = (e: any) => console.log('error: ', request.error)
@@ -42,16 +43,18 @@ function App() {
   useBeforeFirstRender(() => {  // unlike useEffect, this will run before the first render
     setUpDB().then(res => {
       console.log(res)
-      console.log('db before render: ', db)
+      console.log('db before render: ', dbs)
     })
   })
 
   const addNewNote = (title: string, descript: string) => {
-    console.log('db in add new', db)
+    console.log('db in add new', dbs)
 
-    const transaction = db.transaction('notes_os', 'readwrite')
+    const transaction = dbs.transaction('notes_os', 'readwrite')
     const objectStore = transaction.objectStore('notes_os')
     const add = objectStore.add({ title: title, description: descript })  // update with state values
+
+    // get Display to refresh
 
     add.onsuccess = () => console.log('success adding')
   }
@@ -59,7 +62,7 @@ function App() {
   return (
     <div className="App">
       <h1>IndexedDB with React</h1>
-      <Display db={db}></Display> {/* db initially is undefined, then state gets updated, and passed to Display*/}
+      <Display db={dbs}></Display> {/* db initially is undefined, then state gets updated, and passed to Display*/}
       <Form addNewNote={addNewNote} ></Form>
     </div>
   )
