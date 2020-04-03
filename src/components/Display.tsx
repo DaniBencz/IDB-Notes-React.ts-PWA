@@ -22,6 +22,8 @@ const Note = (props: any) => {
 const Display = (props: any) => {
   const { db } = props
 
+  console.log('display db: ', db)
+
   useEffect(() => {
 
     if (db) {

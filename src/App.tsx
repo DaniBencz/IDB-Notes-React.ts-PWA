@@ -11,6 +11,7 @@ function App() {
   const [dbs, callDB] = useState<any>()
 
   const setUpDB = () => {
+    // not sure if we really need a Promise
     return new Promise((res, rej) => {
 
       if ("indexedDB" in window && window.indexedDB !== undefined) {
@@ -19,17 +20,16 @@ function App() {
         const request: IDBOpenDBRequest = idbf.open(dbName, 2)
 
         request.onupgradeneeded = (e: any) => { // runs the very first time, and on version change
-          callDB(e.target.result)
           const db = e.target.result
           const objectStore: IDBObjectStore = db.createObjectStore(
             'notes_os', { keyPath: 'id', autoIncrement: true }
           );
           objectStore.createIndex('title', 'title', { unique: false })
           objectStore.createIndex('description', 'description', { unique: false })
-          res('upgraded')
+          // res('upgraded')  no need to resolve here, onsuccess will get called anyway
         }
 
-        request.onsuccess = (e: any) => {
+        request.onsuccess = (e: any) => { // gets called even if upgrade was done
           callDB(e.target.result)
           res('db request success')
         }
