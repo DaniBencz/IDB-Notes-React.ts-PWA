@@ -1,6 +1,3 @@
-// https://visualstudiomagazine.com/articles/2016/08/30/storing-data-client-javascript-typescript.aspx
-// https://visualstudiomagazine.com/articles/2016/09/01/working-with-indexeddb.aspx
-
 import React, { useState } from 'react';
 import Form from './components/Form'
 import Display from './components/Display'
@@ -9,6 +6,7 @@ import './App.css';
 
 function App() {
   const [dbs, callDB] = useState<any>()
+  const [s_title, updateTitle] = useState<string>()
 
   const setUpDB = () => {
     // not sure if we really need a Promise
@@ -54,18 +52,19 @@ function App() {
     const objectStore = transaction.objectStore('notes_os')
     const add = objectStore.add({ title: title, description: descript })  // update with state values
 
-    // get Display to refresh
-
-    add.onsuccess = () => console.log('success adding')
+    add.onsuccess = () => {
+      updateTitle(title) // get Display to refresh
+      console.log('s_title: ', s_title) // undefined at this point
+    }
   }
 
   return (
     <div className="App">
       <h1>IndexedDB with React</h1>
-      <Display db={dbs}></Display> {/* db initially is undefined, then state gets updated, and passed to Display*/}
+      <Display db={dbs} /* title={s_title} */></Display> {/* db initially is undefined, then state gets updated, and passed to Display*/}
       <Form addNewNote={addNewNote} ></Form>
     </div>
   )
 }
 
-export default App;
+export default App

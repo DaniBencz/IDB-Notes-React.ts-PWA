@@ -21,14 +21,11 @@ const Note = (props: any) => {
 
 const Display = (props: any) => {
   const { db } = props
-
-  console.log('display db: ', db)
-
   useEffect(() => {
 
     if (db) {
       let objectStore = db.transaction('notes_os').objectStore('notes_os')
-      objectStore.openCursor().onsuccess = (e: any) => {
+      objectStore.openCursor().onsuccess = (e: any) => {  // iterate over object store entries
 
         let cursor = e.target.result
         if (cursor) {
@@ -36,11 +33,11 @@ const Display = (props: any) => {
           let descr = cursor.value.description
           console.log('title: ', title)
           console.log('descr: ', descr)
-          cursor.continue()
+          cursor.continue() // continue to next iteration
         }
       }
     }
-  }, [db])  // re-execute if change in db
+  })  // no 2nd parameter, re-execute on every render
 
   return (
     <div id="display">
