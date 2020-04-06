@@ -4,9 +4,8 @@ import Display from './components/Display'
 import useBeforeFirstRender from './beforeRender'
 import './App.css';
 
-function App() {
-  const [dbs, callDB] = useState<any>()
-  const [s_title, updateTitle] = useState<string>()
+const App = () => {
+  const [dbs, setDbs] = useState<any>()
 
   const setUpDB = () => {
     // not sure if we really need a Promise
@@ -27,8 +26,8 @@ function App() {
           // res('upgraded')  no need to resolve here, onsuccess will get called anyway
         }
 
-        request.onsuccess = (e: any) => { // gets called even if upgrade was done
-          callDB(e.target.result)
+        request.onsuccess = (e: any) => { // gets called even if upgrade was called
+          setDbs(e.target.result)
           res('db request success')
         }
 
@@ -53,15 +52,16 @@ function App() {
     const add = objectStore.add({ title: title, description: descript })  // update with state values
 
     add.onsuccess = () => {
-      updateTitle(title) // get Display to refresh
-      console.log('s_title: ', s_title) // undefined at this point
+      window.indexedDB.open('pwa_notes_db').onsuccess = (e: any) => {
+        setDbs(e.target.result) // need to re-set dbs in order to trigger Display render
+      }
     }
   }
 
   return (
     <div className="App">
       <h1>IndexedDB with React</h1>
-      <Display db={dbs} /* title={s_title} */></Display> {/* db initially is undefined, then state gets updated, and passed to Display*/}
+      <Display db={dbs}></Display> {/* db initially is undefined, then state gets updated, and passed to Display*/}
       <Form addNewNote={addNewNote} ></Form>
     </div>
   )

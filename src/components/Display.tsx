@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 const Note = (props: any) => {
 
@@ -19,31 +19,39 @@ const Note = (props: any) => {
   )
 }
 
+interface Note { id: number, title: string, descr: string }
+
 const Display = (props: any) => {
   const { db } = props
-  useEffect(() => {
+  let [notes, setNotes] = useState<Note[]>([])
 
+  useEffect(() => {
+    setNotes([])  // empty state before beginning to refill it, else we end up with duplicates of old entries
+    console.log('display effect')
     if (db) {
       let objectStore = db.transaction('notes_os').objectStore('notes_os')
       objectStore.openCursor().onsuccess = (e: any) => {  // iterate over object store entries
 
         let cursor = e.target.result
         if (cursor) {
-          let title = cursor.value.title
-          let descr = cursor.value.description
-          console.log('title: ', title)
-          console.log('descr: ', descr)
+          // setNotes([...notes, { title: cursor.value.title, descr: cursor.value.descr }])
+          setNotes(prev => [...prev, {
+            id: cursor.value.id,
+            title: cursor.value.title,
+            descr: cursor.value.description
+          }])
           cursor.continue() // continue to next iteration
         }
       }
     }
-  })  // no 2nd parameter, re-execute on every render
+  }, [db])  // no 2nd parameter, re-execute on every render
 
   return (
     <div id="display">
       <h2>Notes</h2>
-      <Note title="my title" description="description"></Note>
-      <Note title="foo" description="bar"></Note>
+      {notes.map((note: Note) => {
+        return <Note key={note.id} title={note.title} description={note.descr}></Note>
+      })}
     </div >
   )
 }
