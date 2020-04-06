@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Form from './components/Form'
 import Display from './components/Display'
 import useBeforeFirstRender from './beforeRender'
@@ -6,6 +6,7 @@ import './App.css';
 
 const App = () => {
   const [dbs, setDbs] = useState<any>()
+  let dbName = useRef('pwa_notes_db')
 
   const setUpDB = () => {
     // not sure if we really need a Promise
@@ -13,8 +14,7 @@ const App = () => {
 
       if ("indexedDB" in window && window.indexedDB !== undefined) {
         const idbf: IDBFactory = window.indexedDB
-        const dbName: string = 'pwa_notes_db'
-        const request: IDBOpenDBRequest = idbf.open(dbName, 2)
+        const request: IDBOpenDBRequest = idbf.open(dbName.current, 2)
 
         request.onupgradeneeded = (e: any) => { // runs the very first time, and on version change
           const db = e.target.result
@@ -52,7 +52,7 @@ const App = () => {
     const add = objectStore.add({ title: title, description: descript })  // update with state values
 
     add.onsuccess = () => {
-      window.indexedDB.open('pwa_notes_db').onsuccess = (e: any) => {
+      window.indexedDB.open(dbName.current).onsuccess = (e: any) => {
         setDbs(e.target.result) // need to re-set dbs in order to trigger Display render
       }
     }
