@@ -14,8 +14,8 @@ const Note = (props: any) => {
       <ul>
         <li>
           <h3>{note.title}</h3>
-          <p>{note.descr}</p>
           <button onClick={deleteNote}>Delete Note</button>
+          <p>{note.descr}</p>
         </li>
       </ul>
     </div>
