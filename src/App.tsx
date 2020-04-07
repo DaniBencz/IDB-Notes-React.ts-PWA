@@ -8,14 +8,13 @@ const App = () => {
   const [dbs, setDbs] = useState<any>()
   let dbName = useRef('pwa_notes_db')
 
-  const setUpDB = () => {
-    // not sure if we really need a Promise
-    return new Promise((res, rej) => {
+  const initDB = async () => {
 
+    const setUpDB = new Promise((res, rej) => {
       if ("indexedDB" in window && window.indexedDB !== undefined) {
         const idbf: IDBFactory = window.indexedDB
         const request: IDBOpenDBRequest = idbf.open(dbName.current, 2)
-
+  
         request.onupgradeneeded = (e: any) => { // runs the very first time, and on version change
           const db = e.target.result
           const objectStore: IDBObjectStore = db.createObjectStore(
@@ -25,23 +24,22 @@ const App = () => {
           objectStore.createIndex('description', 'description', { unique: false })
           // res('upgraded')  no need to resolve here, onsuccess will get called anyway
         }
-
+  
         request.onsuccess = (e: any) => { // gets called even if upgrade was called
           setDbs(e.target.result)
           res('db request success')
         }
-
-        request.onerror = (e: any) => console.log('error: ', request.error)
+  
+        request.onerror = (e: any) => res(request.error)
       }
       else alert("IndexedDB is not supported")
     })
+    
+    return await setUpDB
   }
 
   useBeforeFirstRender(() => {  // unlike useEffect, this will run before the first render
-    setUpDB().then(res => {
-      console.log(res)
-      console.log('db before render: ', dbs)
-    })
+    console.log(initDB())
   })
 
   const addNewNote = (title: string, descript: string) => {
