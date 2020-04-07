@@ -8,9 +8,8 @@ const App = () => {
   const [dbs, setDbs] = useState<any>()
   let dbName = useRef('pwa_notes_db')
 
-  const initDB = async () => {
-
-    const setUpDB = new Promise((res, rej) => {
+  const setUpDB = () => {
+    return new Promise((res, rej) => {
       if ("indexedDB" in window && window.indexedDB !== undefined) {
         const idbf: IDBFactory = window.indexedDB
         const request: IDBOpenDBRequest = idbf.open(dbName.current, 2)
@@ -34,12 +33,11 @@ const App = () => {
       }
       else alert("IndexedDB is not supported")
     })
-    
-    return await setUpDB
   }
 
-  useBeforeFirstRender(() => {  // unlike useEffect, this will run before the first render
-    console.log(initDB())
+  useBeforeFirstRender(async () => {  // unlike useEffect, this will run before the first render
+    let result = await setUpDB()
+    console.log(result)
   })
 
   const addNewNote = (title: string, descript: string) => {
