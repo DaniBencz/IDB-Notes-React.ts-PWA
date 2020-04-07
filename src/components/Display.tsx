@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 
 const Note = (props: any) => {
-  const { db, note } = props
+  const { db, note, updateDisplay } = props
 
   const deleteNote = () => {
-    db.transaction('notes_os', 'readwrite').objectStore('notes_os').delete(note.id)
-    console.log('delete note')
+    const transaction = db.transaction('notes_os', 'readwrite')
+    transaction.objectStore('notes_os').delete(note.id)
+    transaction.oncomplete = () => updateDisplay()
   }
 
   return (
@@ -26,6 +27,7 @@ interface Note { id: number, title: string, descr: string }
 const Display = (props: any) => {
   const { db } = props
   let [notes, setNotes] = useState<Note[]>([])
+  let [reRender, setReRender] = useState<number>(1)
 
   useEffect(() => {
     setNotes([])  // empty state before beginning to refill it, else we end up with duplicates of old entries
@@ -45,13 +47,17 @@ const Display = (props: any) => {
         }
       }
     }
-  }, [db])  // no 2nd parameter, re-execute on every render
+  }, [db, reRender])  // if no 2nd parameter, re-execute on every render
+
+  const updateDisplay = () => {
+    setReRender(reRender === 1 ? 2 : 1)
+  }
 
   return (
     <div id="display">
       <h2>Notes</h2>
       {notes.map((note: Note) => {
-        return <Note key={note.id} db={db} note={note}></Note>
+        return <Note key={note.id} db={db} note={note} updateDisplay={updateDisplay}></Note>
       })}
     </div >
   )
