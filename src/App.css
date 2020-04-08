@@ -7,9 +7,13 @@
   color: white;
 }
 
-#display h2 {
-  margin: auto;
+#header {
   text-align: center;
+  margin: 15px;
+}
+
+#header h1, #header h3 {
+  display: inline;
 }
 
 #display {

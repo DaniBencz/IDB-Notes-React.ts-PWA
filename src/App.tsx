@@ -13,7 +13,7 @@ const App = () => {
       if ("indexedDB" in window && window.indexedDB !== undefined) {
         const idbf: IDBFactory = window.indexedDB
         const request: IDBOpenDBRequest = idbf.open(dbName.current, 2)
-  
+
         request.onupgradeneeded = (e: any) => { // runs the very first time, and on version change
           const db = e.target.result
           const objectStore: IDBObjectStore = db.createObjectStore(
@@ -23,12 +23,12 @@ const App = () => {
           objectStore.createIndex('description', 'description', { unique: false })
           // res('upgraded')  no need to resolve here, onsuccess will get called anyway
         }
-  
+
         request.onsuccess = (e: any) => { // gets called even if upgrade was called
           setDbs(e.target.result)
           res('db request success')
         }
-  
+
         request.onerror = (e: any) => res(request.error)
       }
       else alert("IndexedDB is not supported")
@@ -56,7 +56,9 @@ const App = () => {
 
   return (
     <div className="App">
-      <h1>IndexedDB with React</h1>
+      <div id="header">
+        <h1>Notes </h1><h3>- PWA with React and IDB</h3>
+      </div>
       <Display db={dbs}></Display> {/* db initially is undefined, then state gets updated, and passed to Display*/}
       <Form addNewNote={addNewNote} ></Form>
     </div>
