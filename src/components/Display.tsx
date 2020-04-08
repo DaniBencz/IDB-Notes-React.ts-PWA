@@ -10,15 +10,11 @@ const Note = (props: any) => {
   }
 
   return (
-    <div id="note">
-      <ul>
-        <li>
-          <h3>{note.title}</h3>
-          <button onClick={deleteNote}>Delete Note</button>
-          <p>{note.descr}</p>
-        </li>
-      </ul>
-    </div>
+    <li id="note">
+      <h3>{note.title}</h3>
+      <button onClick={deleteNote}>Delete</button>
+      <p>{note.descr}</p>
+    </li>
   )
 }
 
@@ -56,9 +52,11 @@ const Display = (props: any) => {
   return (
     <div id="display">
       <h2>Notes</h2>
-      {notes.map((note: Note) => {
-        return <Note key={note.id} db={db} note={note} updateDisplay={updateDisplay}></Note>
-      })}
+      <ul>
+        {notes.map((note: Note) => {
+          return <Note key={note.id} db={db} note={note} updateDisplay={updateDisplay}></Note>
+        })}
+      </ul>
     </div >
   )
 }
