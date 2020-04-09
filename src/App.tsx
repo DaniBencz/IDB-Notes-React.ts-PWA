@@ -26,7 +26,7 @@ const App = () => {
 
         request.onsuccess = (e: any) => { // gets called even if upgrade was called
           setDbs(e.target.result)
-          res('db request success')
+          res('db setup successfull')
         }
 
         request.onerror = (e: any) => res(request.error)
@@ -37,6 +37,9 @@ const App = () => {
 
   useBeforeFirstRender(async () => {  // unlike useEffect, this will run before the first render
     let result = await setUpDB()
+    window.addEventListener('beforeinstallprompt', (e) => {
+      alert('wanna install?')
+    })
     console.log(result)
   })
 

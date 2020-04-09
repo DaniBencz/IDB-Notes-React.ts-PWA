@@ -1,4 +1,8 @@
 
 npx create-react-app my-app --template typescript
 
-
+ToDo:
+- redirect install promt to button
+- add link to github
+- SEO
+- deploy
