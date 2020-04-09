@@ -4,16 +4,12 @@ const Form = (props: any) => {
   // useRef instead ?
   const [title, setTitle] = useState('')
   const [descript, setDescript] = useState('')
-  const { addNewNote, install } = props
+  const { addNewNote, installButton, installPWA } = props
 
   const clearFieldAndSubmit = () => {
     addNewNote(title, descript)
     setTitle('')  // empty input fields
     setDescript('')
-  }
-
-  const installPWA = () => {
-    alert('good for you!')
   }
 
   return (
@@ -23,7 +19,8 @@ const Form = (props: any) => {
       {/* works with onInput too, but throws error in console */}
       <input id="description" type="text" placeholder="Description" value={descript} onChange={(e: any) => setDescript(e.target.value)}></input>
       <button id="create" onClick={clearFieldAndSubmit}>Create New Note</button>
-      <button id="install" onClick={installPWA}>Install Application</button>
+      {/* '&&' for inline conditional rendering */}
+      {installButton === true && <button id="install" onClick={installPWA}>Install Application</button>}
     </div>
   )
 }

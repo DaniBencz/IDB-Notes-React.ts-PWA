@@ -6,7 +6,7 @@ import './App.css';
 
 const App = () => {
   const [dbs, setDbs] = useState<any>()
-  const [install, setInstall] = useState(false)
+  const [installButton, setInstallButton] = useState(false)
   let dbName = useRef('pwa_notes_db')
 
   const setUpDB = () => {
@@ -39,8 +39,8 @@ const App = () => {
   useBeforeFirstRender(async () => {  // unlike useEffect, this will run before the first render
     let result = await setUpDB()
     window.addEventListener('beforeinstallprompt', (e) => {
-      alert('wanna install?')
-      setInstall(true);
+      console.log('befor install event: ', e) // use this later to trigger promt
+      setInstallButton(true)
     })
     console.log(result)
   })
@@ -59,13 +59,18 @@ const App = () => {
     }
   }
 
+  const installPWA = () => {
+    alert('good for you!')
+    setInstallButton(false)
+  }
+
   return (
     <div className="App">
       <div id="header">
         <h1>Notes </h1><h3>- PWA with React and IDB</h3>
       </div>
       <Display db={dbs}></Display> {/* db initially is undefined, then state gets updated, and passed to Display*/}
-      <Form addNewNote={addNewNote} install={install}></Form>
+      <Form addNewNote={addNewNote} installButton={installButton} installPWA={installPWA}></Form>
     </div>
   )
 }
