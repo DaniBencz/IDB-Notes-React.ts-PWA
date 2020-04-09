@@ -6,6 +6,7 @@ import './App.css';
 
 const App = () => {
   const [dbs, setDbs] = useState<any>()
+  const [install, setInstall] = useState(false)
   let dbName = useRef('pwa_notes_db')
 
   const setUpDB = () => {
@@ -39,6 +40,7 @@ const App = () => {
     let result = await setUpDB()
     window.addEventListener('beforeinstallprompt', (e) => {
       alert('wanna install?')
+      setInstall(true);
     })
     console.log(result)
   })
@@ -63,7 +65,7 @@ const App = () => {
         <h1>Notes </h1><h3>- PWA with React and IDB</h3>
       </div>
       <Display db={dbs}></Display> {/* db initially is undefined, then state gets updated, and passed to Display*/}
-      <Form addNewNote={addNewNote} ></Form>
+      <Form addNewNote={addNewNote} install={install}></Form>
     </div>
   )
 }

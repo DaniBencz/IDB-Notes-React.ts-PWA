@@ -1,6 +1,6 @@
 {
-  "short_name": "Notes - React IDB PWA",
-  "name": "My First React TypeScript PWA",
+  "short_name": "IDB Notes",
+  "name": "IDB Notes - a React.ts PWA",
   "icons": [
     {
       "src": "favicon.ico",
