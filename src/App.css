@@ -1,3 +1,12 @@
+html {
+  box-sizing: border-box;
+}
+/* dealing with padding expanding width
+https://www.paulirish.com/2012/box-sizing-border-box-ftw/ */
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
 .App {
   background-color: #282c34;
   min-height: 100vh;
@@ -20,7 +29,7 @@
 #display {
   margin: 2px;
   margin-bottom: 20px;
-  width: 93%;
+  width: 95%;
   padding: 5px;
   background: whitesmoke;
   color: black;
@@ -71,7 +80,7 @@ input {
   margin-bottom: 5px;
   width: 100%;
   padding: 10px;
-  box-sizing: border-box;
+  /* box-sizing: border-box; */
   border-radius: 5px;
 }
 
