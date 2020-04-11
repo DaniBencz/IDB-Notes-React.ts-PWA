@@ -1,7 +1,11 @@
 
 npx create-react-app my-app --template typescript
 
+Audit:
+  add canonical link
+  font to >12px
+  inputs need title
+
 ToDo:
-- add link to github
-- SEO
-- deploy
+  https redirection
+  add link to github

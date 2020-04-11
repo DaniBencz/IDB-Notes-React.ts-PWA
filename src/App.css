@@ -7,6 +7,7 @@ https://www.paulirish.com/2012/box-sizing-border-box-ftw/ */
   box-sizing: inherit;
 }
 
+
 .App {
   background-color: #282c34;
   min-height: 100vh;
@@ -69,6 +70,7 @@ button {
   background: white;
   border-radius: 5px;
   padding: 5px 7px;
+  font-size: max(1em, 12px);  /* use largest from list, thus setting the minimum size */
 }
 
 #form {
@@ -80,7 +82,7 @@ input {
   margin-bottom: 5px;
   width: 100%;
   padding: 10px;
-  /* box-sizing: border-box; */
+  font-size: max(1em, 12px);
   border-radius: 5px;
 }
 

@@ -72,7 +72,7 @@ const App = () => {
   return (
     <div className="App">
       <div id="header">
-        <h1>Notes </h1><h3>- PWA with React and IDB</h3>
+        <h1>Notes </h1><h3>- React PWA with IDB</h3>
       </div>
       <Display db={dbs}></Display>
       <Form addNewNote={addNewNote} installButton={installButton} installPWA={installPWA}></Form>
