@@ -1,25 +1,40 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 
 const Form = (props: any) => {
-  // useRef instead ?
   const [title, setTitle] = useState('')
   const [descript, setDescript] = useState('')
   const { addNewNote, installButton, installPWA } = props
+  let titleDOM: any = useRef()  //  input#title DOM element
+
+  useEffect(() => {
+    titleDOM.current = document.getElementById('title')
+    console.log('rendering')
+  }, [])
 
   const clearFieldAndSubmit = () => {
-    addNewNote(title, descript)
-    setTitle('')  // empty input fields
-    setDescript('')
+    if (!title || title === 'Please provide title!') {
+      setTitle('Please provide title!')
+      titleDOM.current.style.color = 'red'
+    } else {
+      addNewNote(title, descript)
+      setTitle('')  // empty input fields
+      setDescript('')
+    }
+  }
+
+  const writeTitle = (e: any) => {
+    titleDOM.current.style.color = 'black'
+    setTitle(e.target.value)
   }
 
   return (
     <div id="form">
       <h2>New Note</h2>
-      <label> {/* Accessibility optimasition requires a string here*/}
+      <label> {/* Accessibility optimasition would require a string here*/}
         <input id="title" type="text" placeholder="Note Title" value={title}
-          onChange={(e: any) => setTitle(e.target.value)}></input>
+          /* works with onInput too, but throws error in console */
+          onChange={writeTitle}></input>
       </label>
-      {/* works with onInput too, but throws error in console */}
       <label>
         <input id="description" type="text" placeholder="Description" value={descript}
           onChange={(e: any) => setDescript(e.target.value)}></input>

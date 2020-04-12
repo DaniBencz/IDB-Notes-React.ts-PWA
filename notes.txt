@@ -3,9 +3,9 @@ npx create-react-app my-app --template typescript
 
 Audit:
   add canonical link
-  font to >12px
+  font to >11px
   inputs need title
 
 ToDo:
-  https redirection
+  share button
   add link to github
