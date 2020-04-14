@@ -1,8 +1,9 @@
-import React, { useState, useRef } from 'react';
-import Form from './components/Form'
+import React, { useState, useRef } from 'react'
+import Header from './components/Header'
 import Display from './components/Display'
+import Form from './components/Form'
 import useBeforeFirstRender from './beforeRender'
-import './App.css';
+import './App.css'
 
 const App = () => {
   let promptEvent: any = useRef()
@@ -71,9 +72,7 @@ const App = () => {
   if (!dbs) return null // if no db access, no point rendering
   return (
     <div className="App">
-      <div id="header">
-        <h1>Notes </h1><h3>- React PWA with IDB</h3>
-      </div>
+      <Header></Header>
       <Display db={dbs}></Display>
       <Form addNewNote={addNewNote} installButton={installButton} installPWA={installPWA}></Form>
     </div>
