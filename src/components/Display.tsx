@@ -51,7 +51,7 @@ const Display = (props: any) => {
 
   return (
     <div id="display">
-      <h2>Notes</h2>
+      {notes.length > 0 ? null : <h2>Your notes will be here</h2>}
       <ul>
         {notes.map((note: Note) => {
           return <Note key={note.id} db={db} note={note} updateDisplay={updateDisplay}></Note>

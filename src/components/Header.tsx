@@ -10,10 +10,9 @@ const Header = () => {
     navigator = window.navigator
 
     if (navigator.share) {
-      console.log('yessir')
       navigator.share({
         title: 'IDB Notes',
-        text: 'Check out this practise project with you phone :)',
+        text: 'IDB Notes React PWA',
         url: 'https://idbnotes.imfast.io/',
       })
         .then(() => alert('Sharing successfull'))
@@ -26,7 +25,12 @@ const Header = () => {
   return (
     <div id="header">
       <button id="share" onClick={share}>Share</button>
-      <h1>Notes </h1><h3>- React PWA with IDB</h3>
+      <h1>Notes </h1>{/* <h3>- React PWA with IDB</h3> */}
+      <button id="gitHub">
+        <a href="https://github.com/DaniBencz/React.ts-IDB-Notes-PWA" rel="noopener noreferrer" target="_blank">
+          GitHub
+        </a>
+      </button>
     </div>
   )
 }

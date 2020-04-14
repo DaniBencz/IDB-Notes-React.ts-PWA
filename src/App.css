@@ -27,6 +27,10 @@ https://www.paulirish.com/2012/box-sizing-border-box-ftw/ */
   float: left;
 }
 
+#gitHub {
+  float: right;
+}
+
 #header h1,
 #header h3 {
   display: inline;
