@@ -20,6 +20,11 @@ https://www.paulirish.com/2012/box-sizing-border-box-ftw/ */
 #header {
   text-align: center;
   margin: 15px;
+  width: 95%;
+}
+
+#share {
+  float: left;
 }
 
 #header h1,

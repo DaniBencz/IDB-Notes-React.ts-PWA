@@ -5,7 +5,3 @@ Audit:
   add canonical link
   font to >11px
   inputs need title
-
-ToDo:
-  share button
-  add link to github
