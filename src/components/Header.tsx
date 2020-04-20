@@ -26,11 +26,10 @@ const Header = () => {
 
   return (
     <div id="header">
-      {/* <button id="share" onClick={share}>Share</button> */}
-      <img id="share" onClick={share} alt="" src={img} width="35" height="35" />
-      <h1>Notes </h1>{/* <h3>- React PWA with IDB</h3> */}
+      <img id="share" onClick={share} alt="share" src={img} width="30" height="30" />
+      <h1>Notes </h1>
       <a id="gitHub" href="https://github.com/DaniBencz/React.ts-IDB-Notes-PWA" rel="noopener noreferrer" target="_blank">
-        <img alt="" src={github} width="33" height="33"></img>
+        <img alt="gitHub repo" src={github} width="33" height="33"></img>
       </a>
     </div>
   )

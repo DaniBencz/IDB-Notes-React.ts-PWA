@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 
-const Form = (props: any) => {
+const Form = (props: { addNewNote: Function, installButton: boolean, installPWA: Function }) => {
   const [title, setTitle] = useState('')
   const [descript, setDescript] = useState('')
   const { addNewNote, installButton, installPWA } = props
@@ -31,7 +31,7 @@ const Form = (props: any) => {
     <div id="form">
       <h2>New Note</h2>
       <label> {/* Accessibility optimasition would require a string here*/}
-        <input id="title" type="text" placeholder="Note Title" value={title}
+        <input id="title" type="text" placeholder="Title" value={title}
           /* works with onInput too, but throws error in console */
           onChange={writeTitle}></input>
       </label>
@@ -39,9 +39,9 @@ const Form = (props: any) => {
         <input id="description" type="text" placeholder="Description" value={descript}
           onChange={(e: any) => setDescript(e.target.value)}></input>
       </label>
-      <button id="create" onClick={clearFieldAndSubmit}>Create New Note</button>
+      <button id="create" onClick={clearFieldAndSubmit}>Add to list</button>
       {/* '&&' for inline conditional rendering */}
-      {installButton === true && <button id="install" onClick={installPWA}>Install Application</button>}
+      {installButton === true && <button id="install" onClick={() => installPWA()}>Install Application</button>}
     </div>
   )
 }

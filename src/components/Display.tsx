@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 
-const Note = (props: any) => {
+interface Note { id: number, title: string, descr: string }
+
+const Note = (props: { db: any, note: Note, updateDisplay: Function }) => {
   const { db, note, updateDisplay } = props
 
   const deleteNote = () => {
@@ -12,15 +14,13 @@ const Note = (props: any) => {
   return (
     <li id="note">
       <h3>{note.title}</h3>
-      <button onClick={deleteNote}>Delete</button>
+      <button onClick={() => deleteNote()}>Delete</button>
       <p>{note.descr}</p>
     </li>
   )
 }
 
-interface Note { id: number, title: string, descr: string }
-
-const Display = (props: any) => {
+const Display = (props: { db: any }) => {
   const { db } = props
   let [notes, setNotes] = useState<Note[]>([])
   let [reRender, setReRender] = useState<number>(1)
@@ -51,7 +51,7 @@ const Display = (props: any) => {
 
   return (
     <div id="display">
-      {notes.length > 0 ? null : <h2>Your notes will be here</h2>}
+      {notes.length > 0 ? null : <h4>Your notes will appear here</h4>}
       <ul>
         {notes.map((note: Note) => {
           return <Note key={note.id} db={db} note={note} updateDisplay={updateDisplay}></Note>

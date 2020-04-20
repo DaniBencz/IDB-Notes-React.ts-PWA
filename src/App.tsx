@@ -6,7 +6,7 @@ import useBeforeFirstRender from './beforeRender'
 import './App.css'
 
 const App = () => {
-  let promptEvent: any = useRef()
+  let promptEvent: any = useRef() // add-to-homescreen event
   const [dbs, setDbs] = useState<any>()
   const [installButton, setInstallButton] = useState(false)
   let dbName = useRef('pwa_notes_db')
@@ -15,9 +15,9 @@ const App = () => {
     return new Promise((res, rej) => {
       if ("indexedDB" in window && window.indexedDB !== undefined) {
         const idbf: IDBFactory = window.indexedDB
-        const request: IDBOpenDBRequest = idbf.open(dbName.current, 2)
+        const request: IDBOpenDBRequest = idbf.open(dbName.current, 1)
 
-        request.onupgradeneeded = (e: any) => { // runs the very first time, and on version change
+        request.onupgradeneeded = (e: any) => { // runs the very first time, and on version changes
           const db = e.target.result
           const objectStore: IDBObjectStore = db.createObjectStore(
             'notes_os', { keyPath: 'id', autoIncrement: true }
@@ -42,7 +42,7 @@ const App = () => {
     let result = await setUpDB()  // no real need, just experimenting here
     console.log(result)
 
-    window.addEventListener('beforeinstallprompt', (e) => {
+    window.addEventListener('beforeinstallprompt', (e: any) => {
       promptEvent.current = e // capture event to trigger later
       setInstallButton(true)
     })
