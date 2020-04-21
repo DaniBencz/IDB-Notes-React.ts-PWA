@@ -69,7 +69,9 @@ const App = () => {
     setInstallButton(false)
   }
 
-  if (!dbs) return null // if no db access, no point rendering
+  const noDB = { color: 'white' }
+  if (!dbs) return <h1 style={noDB}>Waiting for Database Connection...</h1> // if no db access, no point rendering
+
   return (
     <div className="App">
       <Header></Header>

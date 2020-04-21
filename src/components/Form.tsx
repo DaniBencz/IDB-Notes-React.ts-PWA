@@ -1,6 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react'
 
-const Form = (props: { addNewNote: Function, installButton: boolean, installPWA: Function }) => {
+interface FormProp {
+  addNewNote: (title: string, descript: string) => void,
+  installButton: boolean,
+  installPWA: () => void // or simply: Function
+}
+
+const Form = (props: FormProp) => {
   const [title, setTitle] = useState('')
   const [descript, setDescript] = useState('')
   const { addNewNote, installButton, installPWA } = props
@@ -32,7 +38,7 @@ const Form = (props: { addNewNote: Function, installButton: boolean, installPWA:
       <h2>New Note</h2>
       <label> {/* Accessibility optimasition would require a string here*/}
         <input id="title" type="text" placeholder="Title" value={title}
-          /* works with onInput too, but throws error in console */
+          /* works with onInput too, but throws warning in console */
           onChange={writeTitle}></input>
       </label>
       <label>

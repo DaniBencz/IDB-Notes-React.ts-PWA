@@ -9,8 +9,12 @@ https://www.paulirish.com/2012/box-sizing-border-box-ftw/ */
   box-sizing: inherit;
 }
 
-#root {
+body{
   background-color: #282c34;
+}
+
+#root {
+  /* background-color: #282c34; */
   text-align: center;
   text-align: -webkit-center;
 }

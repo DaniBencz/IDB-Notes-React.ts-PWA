@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 interface Note { id: number, title: string, descr: string }
 
-const Note = (props: { db: any, note: Note, updateDisplay: Function }) => {
+const Note = (props: { db: any, note: Note, updateDisplay: () => void }) => {
   const { db, note, updateDisplay } = props
 
   const deleteNote = () => {
@@ -43,7 +43,7 @@ const Display = (props: { db: any }) => {
         }
       }
     }
-  }, [db, reRender])  // if no 2nd parameter, re-execute on every render
+  }, [db, reRender])  // if no 2nd (array) parameter, re-executes on every render
 
   const updateDisplay = () => {
     setReRender(reRender === 1 ? 2 : 1)
