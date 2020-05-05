@@ -20,7 +20,7 @@ const Header = () => {
         .then(() => alert('Sharing successfull'))
         .catch((error: any) => console.log('Error sharing', error));
     } else {
-      alert('Sharing is not supported')
+      alert('Sharing is supported only on mobile devices')
     }
   }
 

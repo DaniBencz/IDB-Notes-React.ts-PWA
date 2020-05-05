@@ -5,3 +5,5 @@ Audit:
   add canonical link
   font to >11px
   inputs need title
+
+serve -s build
