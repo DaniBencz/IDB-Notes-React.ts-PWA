@@ -5,7 +5,7 @@ import Form from './components/Form'
 import useBeforeFirstRender from './beforeRender'
 import './App.css'
 
-const App = () => {
+const App = (props:{test:boolean}) => {
   let promptEvent: any = useRef() // add-to-homescreen event
   const [dbs, setDbs] = useState<any>()
   const [installButton, setInstallButton] = useState(false)
@@ -69,8 +69,9 @@ const App = () => {
     setInstallButton(false)
   }
 
+  const {test} = props
   const noDB = { color: 'white' }
-  if (!dbs) return <h1 style={noDB}>Waiting for Database Connection...</h1> // if no db access, no point rendering
+  if (!dbs && !test) return <h1 style={noDB}>Waiting for Database Connection...</h1> // if no db access, no point rendering
 
   return (
     <div className="App">
