@@ -17,6 +17,7 @@ const App = (props:{test:boolean}) => {
         const idbf: IDBFactory = window.indexedDB
         const request: IDBOpenDBRequest = idbf.open(dbName.current, 1)
 
+        // window.indexedDB.open.onupgradeneeded
         request.onupgradeneeded = (e: any) => { // runs the very first time, and on version changes
           const db = e.target.result
           const objectStore: IDBObjectStore = db.createObjectStore(
@@ -55,6 +56,7 @@ const App = (props:{test:boolean}) => {
     const objectStore = transaction.objectStore('notes_os')
     const add = objectStore.add({ title: title, description: descript })  // update with state values
 
+    // dbs.transaction.objectstore.add.onsuccess
     add.onsuccess = () => {
       window.indexedDB.open(dbName.current).onsuccess = (e: any) => {
         setDbs(e.target.result) // need to re-set dbs in order to trigger Display render
