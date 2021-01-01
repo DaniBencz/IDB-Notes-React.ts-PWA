@@ -58,7 +58,7 @@ test('take userEvent for a spin', () => {
 	const dom = render(<App test={true} />);
 	const input = getById(dom.container, 'title')
 
-	// below same as fireEvent.change(input, { target: { value } })
+	// below same as fireEvent.change(input, { target: { value:<value> } })
 	// but instead of inserting string at once, simulates the typing sequnce
 	userEvent.type(input, 'Hello!')
 	expect(input.value).toBe('Hello!')	// same as:
