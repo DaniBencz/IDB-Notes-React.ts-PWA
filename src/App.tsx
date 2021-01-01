@@ -5,7 +5,7 @@ import Form from './components/Form'
 import useBeforeFirstRender from './beforeRender'
 import './App.css'
 
-const App = () => {
+const App = (props:{test:boolean}) => {
   let promptEvent: any = useRef() // add-to-homescreen event
   const [dbs, setDbs] = useState<any>()
   const [installButton, setInstallButton] = useState(false)
@@ -17,6 +17,7 @@ const App = () => {
         const idbf: IDBFactory = window.indexedDB
         const request: IDBOpenDBRequest = idbf.open(dbName.current, 1)
 
+        // window.indexedDB.open.onupgradeneeded
         request.onupgradeneeded = (e: any) => { // runs the very first time, and on version changes
           const db = e.target.result
           const objectStore: IDBObjectStore = db.createObjectStore(
@@ -55,6 +56,7 @@ const App = () => {
     const objectStore = transaction.objectStore('notes_os')
     const add = objectStore.add({ title: title, description: descript })  // update with state values
 
+    // dbs.transaction.objectstore.add.onsuccess
     add.onsuccess = () => {
       window.indexedDB.open(dbName.current).onsuccess = (e: any) => {
         setDbs(e.target.result) // need to re-set dbs in order to trigger Display render
@@ -69,8 +71,9 @@ const App = () => {
     setInstallButton(false)
   }
 
+  const {test} = props
   const noDB = { color: 'white' }
-  if (!dbs) return <h1 style={noDB}>Waiting for Database Connection...</h1> // if no db access, no point rendering
+  if (!dbs && !test) return <h1 style={noDB}>Waiting for Database Connection...</h1> // if no db access, no point rendering
 
   return (
     <div className="App">
