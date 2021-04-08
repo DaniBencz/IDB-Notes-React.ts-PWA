@@ -15,7 +15,7 @@ const Header = () => {
       navigator.share({
         title: 'IDB Notes',
         text: 'IDB Notes React PWA',
-        url: 'https://idbnotes.imfast.io/',
+        url: 'https://idbnotes.surge.sh/',
       })
         .then(() => alert('Sharing successfull'))
         .catch((error: any) => console.log('Error sharing', error));
